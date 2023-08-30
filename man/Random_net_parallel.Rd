@@ -30,14 +30,16 @@ Random_net_parallel(
 \item{num.cores}{The number of cores used for parallel calculation.}
 }
 \value{
-A vector: The significance -log10(p-value) of characteristics path length and density of a biological network.
+A vector: The significance -log10(p-value) of topological characteristics (path length and density) of a biological network.
 }
 \description{
-Calculating the significance p-value of topological characteristics in biological networks.
+Calculating the significance p-value of topological characteristics (path length and density) in biological networks.
 }
 \examples{
 # NOT RUN
+# library(doParallel)
 # library(SPONGE)
+# library(igraph)
 # data(ACC)
 # num.cores <- 2
 # cores <- makeCluster(num.cores)

@@ -2,9 +2,9 @@
 #' 
 #' @title SC
 #' @param miRExp miRNA expression data, rows are samples, columns are miRNAs.
-#' @param ceRExp ceRNA (lncRNAs or pseudogenes) expression data, rows are samples, columns are ceRNAs.
+#' @param ceRExp ceRNA (lncRNAs or pseudogenes or other RNAs) expression data, rows are samples, columns are ceRNAs.
 #' @param mRExp mRNA expression data, rows are samples, columns are mRNAs.
-#' @param miRTarget Putative miRNA-target interactions.
+#' @param miRTarget Putative miRNA-target (including miRNA-ceRNA and miRNA-mRNA) interactions.
 #' @param minSharedmiR The minimum number of shared miRNAs between ceRNAs and mRNAs.
 #' @param padjustvaluecutoff A cutoff value of adjusted p-values.
 #' @param padjustmethod Adjusted method of p-values, can select one of "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none".
@@ -25,6 +25,7 @@
 #' @examples 
 #' # NOT RUN
 #' # library(SPONGE)
+#' # library(doParallel)
 #' # data(ACC)
 #' # num.cores <- 2
 #' # cores <- makeCluster(num.cores)
@@ -173,11 +174,12 @@ return(Res_final)
 #' @import doParallel
 #' @import foreach
 #' @export
-#' @return Matrix object: Predicted ncRNA synergistic competition relationships.
+#' @return Matrix object: Predicted ncRNA synergistic competition interactions.
 #' 
 #' @examples 
 #' # NOT RUN
 #' # library(SPONGE)
+#' # library(doParallel)
 #' # data(ACC)
 #' # num.cores <- 2
 #' # cores <- makeCluster(num.cores)
@@ -315,7 +317,7 @@ return(Res_final)
 
 }
 
-#' Calculating the significance p-value of topological characteristics in biological networks.
+#' Calculating the significance p-value of topological characteristics (path length and density) in biological networks.
 #'
 #' @title Random_net_parallel
 #' @param obser_path Observed characteristics path length of a biological network.
@@ -332,11 +334,13 @@ return(Res_final)
 #' @importFrom stats pnorm
 #' @importFrom stats sd
 #' @export
-#' @return A vector: The significance -log10(p-value) of characteristics path length and density of a biological network. 
+#' @return A vector: The significance -log10(p-value) of topological characteristics (path length and density) of a biological network. 
 #' 
 #' @examples 
 #' # NOT RUN
+#' # library(doParallel)
 #' # library(SPONGE)
+#' # library(igraph)
 #' # data(ACC)
 #' # num.cores <- 2
 #' # cores <- makeCluster(num.cores)
@@ -385,8 +389,8 @@ Random_net_parallel <- function(obser_path,
 #' Calculating similarity matrix between two list of networks
 #' 
 #' @title Sim.ceRNet
-#' @param net1 List object, the first list of network.
-#' @param net2 List object, the second list of network.
+#' @param net1 List object, the first list of networks.
+#' @param net2 List object, the second list of networks.
 #' @param directed Logical value, network directed (TRUE) or undirected (FALSE).
 #' @import igraph
 #' @export
@@ -425,13 +429,12 @@ Sim.ceRNet <- function(net1,
 #' Calculating similarity matrix between two list of hubs.
 #' 
 #' @title Sim.hub
-#' @param hub1 List object, the first list of hub.
-#' @param hub2 List object, the second list of hub.
+#' @param hub1 List object, the first list of hubs.
+#' @param hub2 List object, the second list of hubs.
 #' @export
 #' @return Matrix object: A similarity matrix between two list of hubs. 
 #' 
 #' @examples
-#' library(igraph) 
 #' hub1 <- list(c("ncRNA1", "ncRNA2", "ncRNA3", "ncRNA4"), c("ncRNA1", "ncRNA2", "ncRNA4", "ncRNA5")) 
 #' hub2 <- list(c("ncRNA1", "ncRNA2", "ncRNA5", "ncRNA6"), c("ncRNA1", "ncRNA3", "ncRNA4", "ncRNA6"))
 #' Sim_hub <- Sim.hub(hub1, hub2) 
@@ -461,7 +464,7 @@ Sim.hub <- function(hub1, hub2){
 #' Identifying the overlap between multiple networks.
 #' 
 #' @title Overlap.ceRNet
-#' @param net List object, the list of network.
+#' @param net List object, the list of networks.
 #' @param overlap.num The minimum number of interactions existing in multiple networks.
 #' @param type The overlapped interactions in overlap.num networks ("equal") or at least overlap.num networks ("least").
 #' @importFrom stringr str_split_fixed
@@ -499,7 +502,7 @@ Overlap.ceRNet <- function(net,
 #' Identifying the overlap between multiple lists of hubs.
 #' 
 #' @title Overlap.hub
-#' @param hub List object, the list of hub
+#' @param hub List object, the list of hubs.
 #' @param overlap.num The minimum number of hubs existing in multiple lists of hubs
 #' @param type The overlapped hubs in overlap.num hub lists ("equal") or at least overlap.num hub lists ("least").
 #' @export

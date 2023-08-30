@@ -20,11 +20,11 @@ SC(
 \arguments{
 \item{miRExp}{miRNA expression data, rows are samples, columns are miRNAs.}
 
-\item{ceRExp}{ceRNA (lncRNAs or pseudogenes) expression data, rows are samples, columns are ceRNAs.}
+\item{ceRExp}{ceRNA (lncRNAs or pseudogenes or other RNAs) expression data, rows are samples, columns are ceRNAs.}
 
 \item{mRExp}{mRNA expression data, rows are samples, columns are mRNAs.}
 
-\item{miRTarget}{Putative miRNA-target interactions.}
+\item{miRTarget}{Putative miRNA-target (including miRNA-ceRNA and miRNA-mRNA) interactions.}
 
 \item{minSharedmiR}{The minimum number of shared miRNAs between ceRNAs and mRNAs.}
 
@@ -47,6 +47,7 @@ Identifying ceRNA interactions using Sensitivity Correlation (SC) method and nul
 \examples{
 # NOT RUN
 # library(SPONGE)
+# library(doParallel)
 # data(ACC)
 # num.cores <- 2
 # cores <- makeCluster(num.cores)

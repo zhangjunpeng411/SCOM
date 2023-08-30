@@ -42,12 +42,15 @@ In this package, we hypothesize that ncRNAs acting as ceRNAs can crosstalk with 
 Three criteria (significant sharing of miRNAs, significantly positive correlation, and significantly sensitive correlation conditioning on shared miRNAs) are used to predict ceRNA network. 
 
 ```{r, eval=FALSE, include=TRUE}
-ExpDatacsv <- system.file("extdata","ExpData.csv",package="miRspongeR")
-ExpData <- read.csv(ExpDatacsv, header=TRUE, sep=",")
-miR2Target <- system.file("extdata", "miR2Target.csv", package="miRspongeR")
-miRTarget <- read.csv(miR2Target, header=TRUE, sep=",")
-sponge_sample_specific_net <- sponge_sample_specific(miRTarget, ExpData, senscorcutoff = 0.1, method = "sppc")
-head(sponge_sample_specific_net[[1]])
+library(SPONGE)
+library(doParallel)
+data(ACC)
+num.cores <- 8
+cores <- makeCluster(num.cores)
+registerDoParallel(cores)
+pre_null_model_ACC <- sponge_build_null_model(number_of_datasets = 1e+03, 
+number_of_samples = nrow(ACC_miRNA_Exp))
+ceRNet_lncR_vs_mR_ACC <- SC(ACC_miRNA_Exp, ACC_lncRNA_Exp, ACC_mRNA_Exp, miRTarget_lncR_vs_mR, null_model = pre_null_model_ACC)
 ```
 
 # Inferring ncRNA synergistic competition network
@@ -55,12 +58,18 @@ head(sponge_sample_specific_net[[1]])
 Based on the proposed ncRNA synergistic competition hypothesis, SCOM applies three criteria, (i) significant synergistic competition for mRNAs, (ii) significant positive correlation, and (iii) significant sensitive correlation conditioning on the mRNAs synergistically competed against by the ncRNAs, to predict the ncRNA synergistic competition network (consisting of ncRNAs acting as ceRNAs) from the gene expression data of ncRNAs and target mRNAs and the predicted ncRNA-related ceRNA networks.
 
 ```{r, eval=FALSE, include=TRUE}
-ExpDatacsv <- system.file("extdata","ExpData.csv",package="miRspongeR")
-ExpData <- read.csv(ExpDatacsv, header=TRUE, sep=",")
-miR2Target <- system.file("extdata", "miR2Target.csv", package="miRspongeR")
-miRTarget <- read.csv(miR2Target, header=TRUE, sep=",")
-sponge_sample_specific_net <- sponge_sample_specific(miRTarget, ExpData, senscorcutoff = 0.1, method = "sppc")
-head(sponge_sample_specific_net[[1]])
+library(SPONGE)
+library(doParallel)
+data(ACC)
+num.cores <- 8
+cores <- makeCluster(num.cores)
+registerDoParallel(cores)
+pre_null_model_ACC <- sponge_build_null_model(number_of_datasets = 1e+03, 
+number_of_samples = nrow(ACC_miRNA_Exp))
+ceRNet_lncR_vs_mR_ACC <- SC(ACC_miRNA_Exp, ACC_lncRNA_Exp, ACC_mRNA_Exp, miRTarget_lncR_vs_mR, null_model = pre_null_model_ACC)
+ceRNet_pseudo_vs_mR_ACC <- SC(ACC_miRNA_Exp, ACC_pseudogene_Exp, ACC_mRNA_Exp, miRTarget_pseudo_vs_mR, null_model = pre_null_model_ACC)
+ceRNet_ACC <- rbind(ceRNet_lncR_vs_mR_ACC, ceRNet_pseudo_vs_mR_ACC)
+SCOMNet_ACC <- SCOM(ceRNet_ACC, cbind(ACC_lncRNA_Exp, ACC_pseudogene_Exp), ACC_mRNA_Exp, null_model = pre_null_model_ACC)
 ```
 
 # Calculating network similarity
@@ -78,7 +87,6 @@ Sim.net <- Sim.ceRNet(net1, net2)
 
 In terms of hub ncRNAs, the "Simpson" method is used to calculate the similarity of tumors. 
 ```{r}
-library(igraph) 
 hub1 <- list(c("ncRNA1", "ncRNA2", "ncRNA3", "ncRNA4"), c("ncRNA1", "ncRNA2", "ncRNA4", "ncRNA5")) 
 hub2 <- list(c("ncRNA1", "ncRNA2", "ncRNA5", "ncRNA6"), c("ncRNA1", "ncRNA3", "ncRNA4", "ncRNA6"))
 Sim_hub <- Sim.hub(hub1, hub2)

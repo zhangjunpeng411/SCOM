@@ -7,7 +7,7 @@
 Overlap.ceRNet(net, overlap.num = 1, type = c("equal", "least"))
 }
 \arguments{
-\item{net}{List object, the list of network.}
+\item{net}{List object, the list of networks.}
 
 \item{overlap.num}{The minimum number of interactions existing in multiple networks.}
 

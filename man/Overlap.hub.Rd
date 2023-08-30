@@ -7,7 +7,7 @@
 Overlap.hub(hub, overlap.num = 1, type = c("equal", "least"))
 }
 \arguments{
-\item{hub}{List object, the list of hub}
+\item{hub}{List object, the list of hubs.}
 
 \item{overlap.num}{The minimum number of hubs existing in multiple lists of hubs}
 

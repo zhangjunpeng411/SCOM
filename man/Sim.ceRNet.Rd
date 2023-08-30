@@ -7,9 +7,9 @@
 Sim.ceRNet(net1, net2, directed = FALSE)
 }
 \arguments{
-\item{net1}{List object, the first list of network.}
+\item{net1}{List object, the first list of networks.}
 
-\item{net2}{List object, the second list of network.}
+\item{net2}{List object, the second list of networks.}
 
 \item{directed}{Logical value, network directed (TRUE) or undirected (FALSE).}
 }

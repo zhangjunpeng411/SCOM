@@ -1,13 +1,6 @@
 # :hammer: SCOM
 **Pan-cancer characterization of ncRNA synergistic competition uncovers potential carcinogenic biomarkers**
 
-# Installation
-```{r echo=FALSE, results='hide', message=FALSE}
-install.packages("devtools")
-library(devtools)
-install_github("zhangjunpeng411/SCOM")
-```
-
 ## :boom: Background
 The ceRNA regulation of malignant tumors involves the interactions between multiple non-coding and coding genes. In the ceRNA network in which ncRNA is involved, the competitive relationships between ncRNAs and target genes are not one-to-one, but many-to-many. Furthermore, the entire cell system presents the characteristics of functional modularity, and each gene functional module (that is, subsets of genes are more frequently interact or crosstalk with each other than estimated by chance) is responsible for specific biological functions in human complex diseases, including malignant tumors. These findings indicate that ncRNAs acting as ceRNAs not independently, but synergistically play important roles in malignant tumors. 
 
@@ -23,6 +16,12 @@ A schematic illustration of **SCOM** is shown in the folowing.
 
 **b.** For each tumor type in Pan-cancer, **SCOM** firstly predicts ncRNA-related ceRNA network by incorporating gene expression data in matched tumor tissues and priori information of miRNA-target interactions. By integrating gene expression data in matched tumor tissues and predicted ncRNA-related ceRNA networks, **SCOM** further infers ncRNA synergistic competition network for each tumor type in Pan-cancer.
 
+# Installation
+```{r echo=FALSE, results='hide', message=FALSE}
+install.packages("devtools")
+library(devtools)
+install_github("zhangjunpeng411/SCOM")
+```
 ## :zap: Quick example to use SCOM
 For inferring ncRNA synergistic competition, users should prepare matched miRNA, lncRNA, pseudogene and mRNA expression data and putative miRNA-target interactions. Users can use the following scripts to infer ncRNA synergistic competition. 
 
@@ -36,7 +35,7 @@ data(ACC)
 ## Identifying ceRNA interactions and ncRNA synergistic competitions in ACC samples
 library(doParallel)
 library(SPONGE)
-num.cores <- 2
+num.cores <- 8
 cores <- makeCluster(num.cores)
 registerDoParallel(cores)
 

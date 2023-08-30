@@ -7,9 +7,9 @@
 Sim.hub(hub1, hub2)
 }
 \arguments{
-\item{hub1}{List object, the first list of hub.}
+\item{hub1}{List object, the first list of hubs.}
 
-\item{hub2}{List object, the second list of hub.}
+\item{hub2}{List object, the second list of hubs.}
 }
 \value{
 Matrix object: A similarity matrix between two list of hubs.
@@ -18,7 +18,6 @@ Matrix object: A similarity matrix between two list of hubs.
 Calculating similarity matrix between two list of hubs.
 }
 \examples{
-library(igraph) 
 hub1 <- list(c("ncRNA1", "ncRNA2", "ncRNA3", "ncRNA4"), c("ncRNA1", "ncRNA2", "ncRNA4", "ncRNA5")) 
 hub2 <- list(c("ncRNA1", "ncRNA2", "ncRNA5", "ncRNA6"), c("ncRNA1", "ncRNA3", "ncRNA4", "ncRNA6"))
 Sim_hub <- Sim.hub(hub1, hub2) 

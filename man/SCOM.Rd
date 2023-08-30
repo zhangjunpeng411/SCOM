@@ -36,7 +36,7 @@ SCOM(
 \item{null_model}{Pre-computed null model. Users can build the null model using "sponge_build_null_model" function in SPONGE R package.}
 }
 \value{
-Matrix object: Predicted ncRNA synergistic competition relationships.
+Matrix object: Predicted ncRNA synergistic competition interactions.
 }
 \description{
 Identifying ncRNA synergistic competition using Synergistic COMpetition (SCOM) method and null model.
@@ -44,6 +44,7 @@ Identifying ncRNA synergistic competition using Synergistic COMpetition (SCOM) m
 \examples{
 # NOT RUN
 # library(SPONGE)
+# library(doParallel)
 # data(ACC)
 # num.cores <- 2
 # cores <- makeCluster(num.cores)
