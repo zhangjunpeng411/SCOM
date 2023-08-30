@@ -1,4 +1,4 @@
-#' miRNA expression data 
+#' miRNA expression data  
 #' 
 #' @docType data 
 #' @name ACC_miRNA_Exp
