@@ -1,0 +1,116 @@
+---
+title: "Inferring ncRNA synergistic competition" 
+author: "\\
+    
+    Junpeng Zhang (<zhangjunpeng411@gmail.com>)\\
+    
+    School of Engineering, Dali University"
+date: '`r Sys.Date()`'
+output:
+    BiocStyle::html_document:
+      toc: yes
+    BiocStyle::pdf_document:
+      toc: yes
+vignette: >
+    %\VignetteIndexEntry{Inferring ncRNA synergistic competition} 
+    %\VignettePackage{SCOM} 
+    % \VignetteEngine{knitr::rmarkdown} 
+    % \usepackage[utf8]{inputenc} 
+    % \VignetteEncoding{UTF-8}
+---
+
+```{r style, echo=FALSE, results="asis", message=FALSE}
+BiocStyle::markdown()
+knitr::opts_chunk$set(tidy = FALSE,
+    warning = FALSE,
+    message = FALSE)
+```
+
+```{r echo=FALSE, results='hide', message=FALSE}
+library(SCOM)
+```
+
+
+# Introduction
+
+Abundant evidence reveals that ncRNAs are important modulators of gene expression, and it is important for us to understand the regulation of ncRNAs in malignant tumors. Understanding the synergism of multiple ncRNAs in competing endogenous RNA (ceRNA) regulation can provide important insights into the mechanisms of malignant tumors caused by ncRNA regulation. 
+
+In this package, we hypothesize that ncRNAs acting as ceRNAs can crosstalk with each other in the form of synergistic competition. We name the hypothesis as the ncRNA synergistic competition hypothesis. To uncover potential carcinogenic biomarkers, we present a framework, SCOM, for identifying ncRNA synergistic competition in malignant tumors.
+    
+# Inferring ceRNA network
+
+Three criteria (significant sharing of miRNAs, significantly positive correlation, and significantly sensitive correlation conditioning on shared miRNAs) are used to predict ceRNA network. 
+
+```{r, eval=FALSE, include=TRUE}
+ExpDatacsv <- system.file("extdata","ExpData.csv",package="miRspongeR")
+ExpData <- read.csv(ExpDatacsv, header=TRUE, sep=",")
+miR2Target <- system.file("extdata", "miR2Target.csv", package="miRspongeR")
+miRTarget <- read.csv(miR2Target, header=TRUE, sep=",")
+sponge_sample_specific_net <- sponge_sample_specific(miRTarget, ExpData, senscorcutoff = 0.1, method = "sppc")
+head(sponge_sample_specific_net[[1]])
+```
+
+# Inferring ncRNA synergistic competition network
+
+Based on the proposed ncRNA synergistic competition hypothesis, SCOM applies three criteria, (i) significant synergistic competition for mRNAs, (ii) significant positive correlation, and (iii) significant sensitive correlation conditioning on the mRNAs synergistically competed against by the ncRNAs, to predict the ncRNA synergistic competition network (consisting of ncRNAs acting as ceRNAs) from the gene expression data of ncRNAs and target mRNAs and the predicted ncRNA-related ceRNA networks.
+
+```{r, eval=FALSE, include=TRUE}
+ExpDatacsv <- system.file("extdata","ExpData.csv",package="miRspongeR")
+ExpData <- read.csv(ExpDatacsv, header=TRUE, sep=",")
+miR2Target <- system.file("extdata", "miR2Target.csv", package="miRspongeR")
+miRTarget <- read.csv(miR2Target, header=TRUE, sep=",")
+sponge_sample_specific_net <- sponge_sample_specific(miRTarget, ExpData, senscorcutoff = 0.1, method = "sppc")
+head(sponge_sample_specific_net[[1]])
+```
+
+# Calculating network similarity
+
+In terms of ceRNA networks or ncRNA synergistic competition networks, the Simpson method is used to calculate the similarity of tumors. 
+
+```{r}
+library(igraph) 
+net1 <- list(as_data_frame(sample_k_regular(10, 2)), as_data_frame(sample_k_regular(10, 2))) 
+net2 <- list(as_data_frame(sample_k_regular(10, 3)), as_data_frame(sample_k_regular(10, 3))) 
+Sim.net <- Sim.ceRNet(net1, net2)
+```
+
+# Calculating hub similarity
+
+In terms of hub ncRNAs, the "Simpson" method is used to calculate the similarity of tumors. 
+```{r}
+library(igraph) 
+hub1 <- list(c("ncRNA1", "ncRNA2", "ncRNA3", "ncRNA4"), c("ncRNA1", "ncRNA2", "ncRNA4", "ncRNA5")) 
+hub2 <- list(c("ncRNA1", "ncRNA2", "ncRNA5", "ncRNA6"), c("ncRNA1", "ncRNA3", "ncRNA4", "ncRNA6"))
+Sim_hub <- Sim.hub(hub1, hub2)
+```
+
+
+# Overlap between multiple networks
+
+Given multiple networks, 'Overlap.ceRNet' finds the minimum number of interactions existing in them.
+
+```{r}
+library(igraph) 
+net <- list(as_data_frame(sample_k_regular(10, 2)), as_data_frame(sample_k_regular(10, 3)), as_data_frame(sample_k_regular(10, 2)), as_data_frame(sample_k_regular(10, 3))) 
+ceRNet_2 <- Overlap.ceRNet(net, overlap.num = 2, type = "least")
+```
+
+# Overlap between multiple lists of hubs
+
+Given multiple lists of hubs, 'Overlap.hub' finds the minimum number of hubs existing in them.
+
+```{r}
+hub <- list(c("ncRNA1", "ncRNA2", "ncRNA3", "ncRNA4"), c("ncRNA1", "ncRNA2", "ncRNA4", "ncRNA5"), c("ncRNA1", "ncRNA2", "ncRNA5", "ncRNA6"), c("ncRNA1", "ncRNA3", "ncRNA4", "ncRNA6")) 
+hub_2 <- Overlap.hub(hub, overlap.num = 2, type = "least")
+```
+
+
+# Conclusions
+
+Abundant evidence reveals that ncRNAs can serve as important regulators across malignant tumors. However, from the perspective of synergistic competition, ncRNA regulation is still unearthed. By using SCOM, we provide a landscape of ncRNA synergistic competition in Pan-cancer, contributing to the discovery of potential carcinogenic biomarkers. Ultimately, SCOM provides a framework for discovering the relationships between the synergistic competition ncRNAs (i.e. ncRNAs involved in the synergistic competition) and malignant tumors, and can help to elucidate ncRNA synergistic competition mechanisms in malignant tumors.
+
+
+# Session information
+```{r}
+sessionInfo()
+```
