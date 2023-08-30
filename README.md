@@ -9,7 +9,7 @@ In this work, to uncover potential carcinogenic biomarkers, we present a **S**yn
 A schematic illustration of **SCOM** is shown in the folowing.
 
 <p align="center">
-  <img src="https://github.com/zhangjunpeng411/SCOM/blob/main/SCOM_schematic_illustration.png" alt="SCOM schematic illustration" border="0.1">
+  <img src="https://github.com/zhangjunpeng411/SCOM/blob/master/SCOM_schematic_illustration.png" alt="SCOM schematic illustration" border="0.1">
 </p>
 
 **a.** An illustration of the ncRNA synergistic competition hypothesis. 
