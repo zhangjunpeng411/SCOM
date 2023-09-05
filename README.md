@@ -49,3 +49,7 @@ SCOMNet_ACC <- SCOM(ceRNet_ACC, cbind(ACC_lncRNA_Exp, ACC_pseudogene_Exp), ACC_m
 
 ## License
 GPL-3
+
+## Citation
+Zhang J, Liu L, Wei X, Zhao C, Li S, Li J, Le TD. Pan-cancer characterization of ncRNA synergistic competition uncovers potential carcinogenic biomarkers. PLoS Computational Biology. 2023, 19(10): e1011308. https://doi.org/10.1371/journal.pcbi.1011308.
+
